@@ -5,7 +5,7 @@
 				<el-input v-model="account.name" />
 			</el-form-item>
 			<el-form-item label="密码" prop="password">
-				<el-input show-password type="password" v-model="account.password" />
+				<el-input show-password type="password" v-model="account.password" @keyup.enter="loginAccount" />
 			</el-form-item>
 		</el-form>
 	</div>
@@ -40,11 +40,9 @@ const loginStore = useLoginStore()
 function loginAccount(isRememberPwd: any) {
 	elformRef.value?.validate((valid) => {
 		if (valid) {
-			console.log('验证通过~')
 			const name = account.name
 			const password = account.password
 			loginStore.loginAccountAction({ name, password })
-			console.log(isRememberPwd)
 
 			if (isRememberPwd) {
 				localCache.setCache('name', name)

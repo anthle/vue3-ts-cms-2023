@@ -1,23 +1,54 @@
 <template>
 	<div class="main">
-		<h2>main</h2>
-		<button @click="onExitClick">退出登录</button>
+		<el-container class="main-content">
+			<el-aside :width="isFold ? '60px' : '240px'">
+				<main-menus :is-fold="isFold"></main-menus>
+			</el-aside>
+			<el-container>
+				<el-header>
+					<main-header @fold-change="handleFoldChange" />
+				</el-header>
+				<el-main>
+					<router-view></router-view>
+				</el-main>
+			</el-container>
+		</el-container>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { LOGIN_TOKEN } from '@/global/constants'
-import router from '@/router'
-import { localCache } from '@/utils/cache'
+import MainMenus from '@/components/main-menus/main-menus.vue'
+import MainHeader from '@/components/main-header/main-header.vue'
+import useLoginStore from '@/store/login/login'
+import { ref } from 'vue'
 
-function onExitClick() {
-	localCache.removeCache(LOGIN_TOKEN)
-	router.push('/login')
+const isFold = ref(false)
+function handleFoldChange(flag: boolean) {
+	isFold.value = flag
 }
+
+const loginStore = useLoginStore()
+console.log('挂载pinia', loginStore)
 </script>
 
 <style lang="less" scoped>
 .main {
-	color: #000;
+	height: 100%;
+
+	.main-content {
+		height: 100%;
+
+		.el-aside {
+			transition: width 0.5s ease-in-out;
+		}
+
+		.el-header {
+			background-color: #b3c0d1;
+		}
+
+		.el-main {
+			background-color: #d3dce6;
+		}
+	}
 }
 </style>
