@@ -15,18 +15,21 @@ function getLocalRoutes() {
 export let firstMenu: any = null
 export default function mapMenusToRoutes(userMenus: any) {
 	const localRoutes = getLocalRoutes()
-	const menusRoutes = []
+	const menusRoutes: any = []
 	// 遍历用户菜单，匹配本地路由
 	for (const menu of userMenus) {
 		for (const submenu of menu.children) {
 			const route = localRoutes.find((item: any) => item.path === submenu.url)
 			if (route) {
+				if (!menusRoutes.find((item: any) => item.path === menu.url)) {
+					menusRoutes.push({ path: menu.url, redirect: route.path })
+				}
+
 				menusRoutes.push(route)
 
 				// 保存第一个菜单
 				if (!firstMenu && route) {
 					firstMenu = submenu
-					console.log(firstMenu)
 				}
 			}
 		}
@@ -47,4 +50,17 @@ export function mapPathToMenu(path: string, userMenus: any[]) {
 			}
 		}
 	}
+}
+
+export function mapPathToBreadcrumb(path: string, userMenus: any[]) {
+	const breadcrumb = []
+	for (const menu of userMenus) {
+		for (const submenu of menu.children) {
+			if (submenu.url === path) {
+				breadcrumb.push({ name: menu.name, path: menu.url })
+				breadcrumb.push({ name: submenu.name, path: submenu.url })
+			}
+		}
+	}
+	return breadcrumb
 }

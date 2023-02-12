@@ -39,7 +39,7 @@ import router from '@/router'
 import { localCache } from '@/utils/cache'
 import { useRoute } from 'vue-router'
 import { mapPathToMenu } from '@/utils/map-menus'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 defineProps({
 	isFold: {
@@ -52,8 +52,11 @@ const userMenus = localCache.getCache('userMenus')
 
 // 根据当前页面的menu获取defalutActive 刷新不丢失
 const route = useRoute()
-const pathmenu = mapPathToMenu(route.path, userMenus)
-const defalutActive = ref(pathmenu.id + '')
+
+const defalutActive = computed(() => {
+	const pathmenu = mapPathToMenu(route.path, userMenus)
+	return pathmenu.id + ''
+})
 
 function menuItemClick(child: any) {
 	router.push(child.url)

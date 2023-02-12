@@ -4,7 +4,9 @@
 			<el-icon size="30px"> <component :is="isFold ? 'Expand' : 'Fold'"> </component></el-icon>
 		</div>
 		<div class="content">
-			<div class="breadcrumb">面包屑</div>
+			<div class="breadcrumb">
+				<header-breadcrumb></header-breadcrumb>
+			</div>
 			<div class="info">
 				<header-info></header-info>
 			</div>
@@ -15,6 +17,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import headerInfo from './c-cpns/header-info.vue'
+import headerBreadcrumb from './c-cpns/header-breadcrumb.vue'
 
 const emit = defineEmits(['foldChange'])
 const isFold = ref(false)
