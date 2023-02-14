@@ -43,7 +43,7 @@ const useLoginStore = defineStore('login', {
 
 			// 根据用户菜单生成路由
 			const routes = mapMenusToRoutes(userMenus.data)
-			routes.forEach((item) => router.addRoute('main', item))
+			routes.forEach((item: any) => router.addRoute('main', item))
 
 			router.push('/main')
 		},
@@ -56,7 +56,7 @@ const useLoginStore = defineStore('login', {
 				this.userInfo = userInfo
 				this.userMenus = userMenus
 				const routes = mapMenusToRoutes(this.userMenus)
-				routes.forEach((item) => router.addRoute('main', item))
+				routes.forEach((item: any) => router.addRoute('main', item))
 			}
 		}
 	}

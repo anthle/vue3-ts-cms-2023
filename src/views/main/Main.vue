@@ -19,16 +19,12 @@
 <script setup lang="ts">
 import MainMenus from '@/components/main-menus/main-menus.vue'
 import MainHeader from '@/components/main-header/main-header.vue'
-import useLoginStore from '@/store/login/login'
 import { ref } from 'vue'
 
 const isFold = ref(false)
 function handleFoldChange(flag: boolean) {
 	isFold.value = flag
 }
-
-const loginStore = useLoginStore()
-console.log('挂载pinia', loginStore)
 </script>
 
 <style lang="less" scoped>
