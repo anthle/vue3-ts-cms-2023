@@ -5,6 +5,7 @@ import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
 import mapMenusToRoutes from '@/utils/map-menus'
+import useMainStore from '../main/main'
 
 interface ILoginState {
 	token: string
@@ -38,6 +39,9 @@ const useLoginStore = defineStore('login', {
 			const userMenus = await getUserMenusByRoleId(id)
 			this.userMenus = userMenus.data
 
+			const mainStore = useMainStore()
+			mainStore.fetchEntireDataAction()
+
 			// 保存用户信息
 			localCache.setCache('userMenus', this.userMenus)
 
@@ -51,6 +55,9 @@ const useLoginStore = defineStore('login', {
 			const token = localCache.getCache(LOGIN_TOKEN)
 			const userInfo = localCache.getCache('userInfo')
 			const userMenus = localCache.getCache('userMenus')
+
+			const mainStore = useMainStore()
+			mainStore.fetchEntireDataAction()
 			if (token && userInfo && userMenus) {
 				this.token = token
 				this.userInfo = userInfo

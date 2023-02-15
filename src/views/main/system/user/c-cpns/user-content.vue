@@ -2,7 +2,7 @@
 	<div class="user-content">
 		<div class="header">
 			<h3 class="title">用户列表</h3>
-			<div class="btn"><el-button type="primary">新建用户</el-button></div>
+			<div class="btn"><el-button type="primary" @click="createNewuserClick">新建用户</el-button></div>
 		</div>
 		<div class="table">
 			<el-table :data="userList" border style="width: 100%">
@@ -29,12 +29,13 @@
 				</el-table-column>
 				<el-table-column label="操作" width="180px" align="center">
 					<template #default="{ row }">
-						<el-button size="small" type="primary" icon="Edit">编辑</el-button>
+						<el-button size="small" type="primary" icon="Edit" @click="handleEditUserInfo(row)">编辑</el-button>
 						<el-button size="small" type="danger" icon="Delete" @click="deleteUserClick(row.id)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 		</div>
+
 		<div class="pagination">
 			<div class="demo-pagination-block">
 				<el-pagination
@@ -68,7 +69,6 @@ function fetchUserListData(formData: any = {}) {
 	const size = pageSize.value
 	const offset = (currentPage.value - 1) * pageSize.value
 	const info = { size, offset, ...formData }
-	console.log(info)
 
 	systemStore.postUsersListAction(info)
 }
@@ -85,8 +85,20 @@ defineExpose({
 	fetchUserListData
 })
 
+// 编辑/删除用户
+function handleEditUserInfo(row: any) {
+	emit('editUserInfoClick', row)
+}
+
 function deleteUserClick(id: number) {
 	systemStore.deleteUserAction(id)
+}
+
+// 新建用户
+const emit = defineEmits(['createNewuserClick', 'editUserInfoClick'])
+
+function createNewuserClick() {
+	emit('createNewuserClick')
 }
 </script>
 

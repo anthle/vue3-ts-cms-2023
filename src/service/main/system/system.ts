@@ -12,3 +12,17 @@ export function deleteUserById(id: number) {
 		url: `/users/${id}`
 	})
 }
+
+export function createUserData(data: any) {
+	return jlRequest.post({
+		url: '/users',
+		data
+	})
+}
+
+export function editUserData(id: number, userInfo: any) {
+	return jlRequest.patch({
+		url: `/users/${id}`,
+		data: userInfo
+	})
+}
