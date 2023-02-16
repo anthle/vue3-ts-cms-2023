@@ -17,8 +17,6 @@ const useMainStore = defineStore('main', {
 			const departmentResult = await postUserDepartmentList()
 			this.entierRoles = rolesResult.data.list
 			this.entierDepartments = departmentResult.data.list
-			console.log(this.entierRoles)
-			console.log(this.entierDepartments)
 		}
 	}
 })

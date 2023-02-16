@@ -26,3 +26,30 @@ export function editUserData(id: number, userInfo: any) {
 		data: userInfo
 	})
 }
+
+export function postPageListData(pageName: string, queryInfo: any) {
+	return jlRequest.post({
+		url: `${pageName}/list`,
+		data: queryInfo
+	})
+}
+
+export function deletePageData(pageName: string, id: number) {
+	return jlRequest.delete({
+		url: `/${pageName}/${id}`
+	})
+}
+
+export function createPageData(pageName: string, data: any) {
+	return jlRequest.post({
+		url: `/${pageName}`,
+		data
+	})
+}
+
+export function editPageData(pageName: string, id: number, userInfo: any) {
+	return jlRequest.patch({
+		url: `/${pageName}/${id}`,
+		data: userInfo
+	})
+}
