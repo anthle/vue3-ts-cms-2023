@@ -1,38 +1,52 @@
 <template>
 	<div class="department">
-		<department-search @search-info="handleSearchInfo" @reset-info="handleResetClick"></department-search>
-		<department-content
+		<page-search
+			:searchConfig="searchConfig"
+			@search-info="handleSearchInfo"
+			@reset-info="handleResetClick"
+		></page-search>
+		<page-content
+			:contentConfig="contentConfig"
 			ref="contentRef"
 			@create-new-department-click="handleCreateNewDepartment"
 			@edit-department-info-click="handleEditDepartment"
-		></department-content>
-		<department-modal ref="modalRef"></department-modal>
+		>
+			<template #name="{ row }">
+				<span class="name">{{ row.name }}</span>
+			</template>
+		</page-content>
+		<page-modal ref="modalRef" :modalConfig="modalConfigRef"></page-modal>
 	</div>
 </template>
 
 <script setup lang="ts" name="department">
-import departmentSearch from './c-cnps/department-search.vue'
-import departmentContent from './c-cnps/department-content.vue'
-import departmentModal from './c-cnps/department-modal.vue'
-import { ref } from 'vue'
+import pageSearch from '@/components/page-search/page-search.vue'
+import pageContent from '@/components/page-content/page-content.vue'
+import pageModal from '@/components/page-modal/page-modal.vue'
+import searchConfig from './configs/search.config'
+import contentConfig from './configs/content.config'
+import modalConfig from './configs/modal.config'
+import { computed } from 'vue'
+import userMainStore from '@/store/main/main'
+import usePageContent from '@/hooks/usePageContent'
+import usePageModal from '@/hooks/usePageModal'
 
-const contentRef = ref<InstanceType<typeof departmentContent>>()
-function handleResetClick() {
-	contentRef.value?.fetchPageListData()
-}
-function handleSearchInfo(formData: any) {
-	contentRef.value?.fetchPageListData(formData)
-}
+const modalConfigRef = computed(() => {
+	const mainStore = userMainStore()
+	const departments = mainStore.entierDepartments.map((item) => {
+		return { label: item.name, value: item.id }
+	})
+	modalConfig.formItems.forEach((item) => {
+		if (item.prop === 'parentId') {
+			item.options?.push(...departments)
+		}
+	})
+	return modalConfig
+})
 
-const modalRef = ref<InstanceType<typeof departmentModal>>()
-
-function handleCreateNewDepartment() {
-	modalRef.value?.handleOpenDialog()
-}
-function handleEditDepartment(info: any) {
-	const isEdit = true
-	modalRef.value?.handleOpenDialog(isEdit, info)
-}
+// 重置查询新建编辑操作放入hooks中
+const { contentRef, handleResetClick, handleSearchInfo } = usePageContent()
+const { modalRef, handleCreateNewDepartment, handleEditDepartment } = usePageModal()
 </script>
 
 <style scoped>

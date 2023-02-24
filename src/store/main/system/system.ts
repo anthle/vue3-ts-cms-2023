@@ -12,7 +12,7 @@ import { defineStore } from 'pinia'
 
 interface ISystemState {
 	userList: any[]
-	TotalCount: number
+	totalCount: number
 	pageList: any[]
 	pageRTotalCount: number
 }
@@ -20,7 +20,7 @@ interface ISystemState {
 const systemStore = defineStore('system', {
 	state: (): ISystemState => ({
 		userList: [],
-		TotalCount: 0,
+		totalCount: 0,
 
 		pageList: [],
 		pageRTotalCount: 0
@@ -30,7 +30,7 @@ const systemStore = defineStore('system', {
 			const res = await postUsersListData(queryInfo)
 
 			this.userList = res.data.list
-			this.TotalCount = res.data.totalCount
+			this.totalCount = res.data.totalCount
 		},
 		async deleteUserAction(id: number) {
 			await deleteUserById(id)

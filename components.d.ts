@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DepartmentContent: typeof import('./src/components/page-content/department-content.vue')['default']
+    DepartmentSearch: typeof import('./src/components/mian-search/department-search.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -52,6 +54,10 @@ declare module '@vue/runtime-core' {
     HeaderInfo: typeof import('./src/components/main-header/c-cpns/header-info.vue')['default']
     MainHeader: typeof import('./src/components/main-header/main-header.vue')['default']
     MainMenus: typeof import('./src/components/main-menus/main-menus.vue')['default']
+    MainSearch: typeof import('./src/components/page-search/main-search.vue')['default']
+    PageContent: typeof import('./src/components/page-content/page-content.vue')['default']
+    PageModal: typeof import('./src/components/page-modal/page-modal.vue')['default']
+    PageSearch: typeof import('./src/components/page-search/page-search.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
