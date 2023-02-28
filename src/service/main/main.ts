@@ -11,3 +11,9 @@ export function postUserDepartmentList() {
 		url: '/department/list'
 	})
 }
+
+export function postUserMenuList() {
+	return jlRequest.post({
+		url: '/menu/list'
+	})
+}

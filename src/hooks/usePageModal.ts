@@ -1,21 +1,25 @@
 import { ref } from 'vue'
 import type pageModal from '@/components/page-modal/page-modal.vue'
 
-function usePageModal() {
+type editCallback = (info: any) => void
+
+function usePageModal(editCallback?: editCallback) {
 	const modalRef = ref<InstanceType<typeof pageModal>>()
 
-	function handleCreateNewDepartment() {
+	function handleCreateClick() {
 		modalRef.value?.handleOpenDialog()
+		if (editCallback) editCallback(null)
 	}
-	function handleEditDepartment(info: any) {
+	function handleEditClick(info: any) {
 		const isEdit = true
 		modalRef.value?.handleOpenDialog(isEdit, info)
+		if (editCallback) editCallback(info)
 	}
 
 	return {
 		modalRef,
-		handleCreateNewDepartment,
-		handleEditDepartment
+		handleCreateClick,
+		handleEditClick
 	}
 }
 

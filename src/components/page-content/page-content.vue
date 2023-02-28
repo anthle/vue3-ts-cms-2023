@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="table">
-			<el-table :data="pageList" border style="width: 100%">
+			<el-table :data="pageList" border style="width: 100%" v-bind="props.contentConfig.childrenProps">
 				<template v-for="item in props.contentConfig.propsList" :key="item.prop">
 					<template v-if="item.type === 'time'">
 						<el-table-column v-bind="item" align="center">
@@ -74,6 +74,7 @@ interface IProps {
 			btnTitle?: string
 		}
 		propsList?: any[]
+		childrenProps?: any
 	}
 }
 
@@ -112,7 +113,7 @@ function handleEditDeparmentInfo(row: any) {
 }
 
 function deleteDepartmentClick(id: number) {
-	systemStore.deletePageAction('department', id)
+	systemStore.deletePageAction(props.contentConfig.pageName, id)
 }
 
 // 新建用户

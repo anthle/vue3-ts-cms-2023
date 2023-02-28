@@ -23,6 +23,9 @@
 										</template>
 									</el-select>
 								</template>
+								<template v-else-if="item.type === 'custom'">
+									<slot :name="item.slotName"></slot>
+								</template>
 							</el-form-item>
 						</el-col>
 					</template>
@@ -51,6 +54,7 @@ interface IProp {
 		}
 		formItems: any[]
 	}
+	otherInfo?: any
 }
 
 const props = defineProps<IProp>()
@@ -71,20 +75,17 @@ const editData = ref()
 
 function handleOpenDialog(isEdit: Boolean = false, departmentInfo?: any) {
 	dialogVisible.value = true
-
 	if (departmentInfo && isEdit) {
 		isEditRef.value = true
 		editData.value = departmentInfo
-		for (const key in formInfo) {
-			formInfo[key] = departmentInfo[key]
-		}
+		Object.assign(formInfo, departmentInfo)
 	} else {
 		isEditRef.value = false
 		editData.value = null
-		for (const key in formInfo) {
-			const item = props.modalConfig.formItems.find((item) => item.prop === key)
-			formInfo[key] = item ? item.initialValue : ''
-		}
+		const defaultFormInfo = props.modalConfig.formItems.reduce((obj, item) => {
+			return { ...obj, [item.prop]: item.initialValue || '' }
+		}, {})
+		Object.assign(formInfo, defaultFormInfo)
 	}
 }
 
@@ -93,10 +94,15 @@ const systemStore = useSystemStore()
 
 function handleCreateDepartmentClick() {
 	dialogVisible.value = false
+	let infoData = formInfo
+	if (props.otherInfo) {
+		infoData = { ...infoData, ...props.otherInfo }
+	}
+
 	if (isEditRef.value && editData.value) {
-		systemStore.editPageDataAction(props.modalConfig.pageName, editData.value.id, formInfo)
+		systemStore.editPageDataAction(props.modalConfig.pageName, editData.value.id, infoData)
 	} else {
-		systemStore.createPageDataAction(props.modalConfig.pageName, formInfo)
+		systemStore.createPageDataAction(props.modalConfig.pageName, infoData)
 	}
 }
 
