@@ -4,20 +4,22 @@ import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
-import mapMenusToRoutes from '@/utils/map-menus'
+import { mapMenusToRoutes, mapMenuListToPermissions } from '@/utils/map-menus'
 import useMainStore from '../main/main'
 
 interface ILoginState {
 	token: string
 	userInfo: any
 	userMenus: any
+	permissions: string[]
 }
 
 const useLoginStore = defineStore('login', {
 	state: (): ILoginState => ({
 		token: '',
 		userInfo: {},
-		userMenus: []
+		userMenus: [],
+		permissions: []
 	}),
 	actions: {
 		async loginAccountAction(account: IAccount) {
@@ -42,6 +44,12 @@ const useLoginStore = defineStore('login', {
 			const mainStore = useMainStore()
 			mainStore.fetchEntireDataAction()
 
+			// 获取用户权限
+			console.log(userMenus.data)
+
+			const permissions = mapMenuListToPermissions(userMenus.data)
+			this.permissions = permissions
+
 			// 保存用户信息
 			localCache.setCache('userMenus', this.userMenus)
 
@@ -55,6 +63,10 @@ const useLoginStore = defineStore('login', {
 			const token = localCache.getCache(LOGIN_TOKEN)
 			const userInfo = localCache.getCache('userInfo')
 			const userMenus = localCache.getCache('userMenus')
+
+			// 获取用户权限
+			const permissions = mapMenuListToPermissions(userMenus)
+			this.permissions = permissions
 
 			const mainStore = useMainStore()
 			mainStore.fetchEntireDataAction()

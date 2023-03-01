@@ -3,7 +3,7 @@
 		<div class="header">
 			<h3 class="title">{{ props.contentConfig.header?.title ?? '数据列表' }}</h3>
 			<div class="btn">
-				<el-button type="primary" @click="createNewDepartmentClick">{{
+				<el-button type="primary" @click="createNewDepartmentClick" v-if="isCreate">{{
 					props.contentConfig.header?.btnTitle ?? '新建数据'
 				}}</el-button>
 			</div>
@@ -21,10 +21,15 @@
 					<template v-else-if="item.type === 'operation'">
 						<el-table-column v-bind="item" align="center">
 							<template #default="{ row }">
-								<el-button size="small" type="primary" icon="Edit" @click="handleEditDeparmentInfo(row)"
+								<el-button size="small" type="primary" icon="Edit" @click="handleEditDeparmentInfo(row)" v-if="isUpdate"
 									>编辑</el-button
 								>
-								<el-button size="small" type="danger" icon="Delete" @click="deleteDepartmentClick(row.id)"
+								<el-button
+									size="small"
+									type="danger"
+									icon="Delete"
+									@click="deleteDepartmentClick(row.id)"
+									v-if="isDelete"
 									>删除</el-button
 								>
 							</template>
@@ -45,13 +50,13 @@
 		</div>
 
 		<div class="pagination">
-			<div class="demo-pagination-block">
+			<div class="demo-pagination-block" v-if="props.contentConfig.pageName !== 'menu'">
 				<el-pagination
 					v-model:current-page="currentPage"
 					v-model:page-size="pageSize"
 					:page-sizes="[10, 20, 30]"
 					layout="total, sizes, prev, pager, next, jumper"
-					:total="pageRTotalCount"
+					:total="+pageTotalCount"
 					@size-change="handleSizeChange"
 					@current-change="handleCurrentChange"
 				/>
@@ -65,6 +70,7 @@ import usesystemStore from '@/store/main/system/system'
 import { storeToRefs } from 'pinia'
 import { formatUTC } from '@/utils/format'
 import { ref } from 'vue'
+import usePermissions from '@/hooks/usePermissions'
 
 interface IProps {
 	contentConfig: {
@@ -83,9 +89,22 @@ const props = defineProps<IProps>()
 const systemStore = usesystemStore()
 const currentPage = ref(1)
 const pageSize = ref(10)
+
+systemStore.$onAction(({ name, after }) => {
+	after(() => {
+		if (name === 'postPageListDataAction' || name === 'deletePageAction' || name === 'createPageDataAction') {
+			currentPage.value = 1
+		}
+	})
+})
+
 fetchPageListData()
 
-const { pageList, pageRTotalCount } = storeToRefs(systemStore)
+const isCreate = usePermissions(`${props.contentConfig.pageName}:create`)
+const isDelete = usePermissions(`${props.contentConfig.pageName}:delete`)
+const isUpdate = usePermissions(`${props.contentConfig.pageName}:update`)
+
+const { pageList, pageTotalCount } = storeToRefs(systemStore)
 
 function fetchPageListData(formData: any = {}) {
 	const size = pageSize.value

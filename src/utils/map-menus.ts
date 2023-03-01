@@ -13,7 +13,7 @@ function getLocalRoutes() {
 }
 
 export let firstMenu: any = null
-export default function mapMenusToRoutes(userMenus: any) {
+export function mapMenusToRoutes(userMenus: any) {
 	const localRoutes = getLocalRoutes()
 	const menusRoutes: any = []
 	// 遍历用户菜单，匹配本地路由
@@ -80,4 +80,22 @@ export function mapMenuListToIds(menuList: any[]) {
 	recurseGetIds(menuList)
 
 	return ids
+}
+
+export function mapMenuListToPermissions(menuList: any[]) {
+	const permissions: string[] = []
+
+	function recurseGetPermissions(menus: any[]) {
+		for (const item of menus) {
+			if (item.type === 3) {
+				permissions.push(item.permission)
+			} else {
+				recurseGetPermissions(item.children ?? [])
+			}
+		}
+	}
+
+	recurseGetPermissions(menuList)
+
+	return permissions
 }

@@ -27,7 +27,7 @@
 		</el-form>
 		<div class="btn">
 			<el-button icon="Refresh" @click="handleResetClick">重置</el-button>
-			<el-button icon="Search" type="primary" @click="handleSearchClick">查询</el-button>
+			<el-button icon="Search" type="primary" @click="handleSearchClick" v-if="isQuery">查询</el-button>
 		</div>
 	</div>
 </template>
@@ -35,14 +35,17 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { ElForm } from 'element-plus'
-
+import usePermissions from '@/hooks/usePermissions'
 interface Iprops {
 	searchConfig: {
 		formItem: any
+		pageName: string
 	}
 }
 
 const props = defineProps<Iprops>()
+
+const isQuery = usePermissions(`${props.searchConfig.pageName}:query`)
 
 const initialForm: any = {}
 for (const item of props.searchConfig.formItem) {

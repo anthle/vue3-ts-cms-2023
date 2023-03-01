@@ -63,7 +63,9 @@ function editCallback(itemData?: any) {
 			elTreeRef?.value?.setCheckedKeys(menuIds)
 		})
 	} else {
-		elTreeRef?.value?.setCheckedKeys([])
+		nextTick(() => {
+			elTreeRef?.value?.setCheckedKeys([])
+		})
 	}
 }
 </script>
