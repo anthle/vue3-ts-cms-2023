@@ -6,7 +6,6 @@ import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
 import { mapMenusToRoutes, mapMenuListToPermissions } from '@/utils/map-menus'
 import useMainStore from '../main/main'
-
 interface ILoginState {
 	token: string
 	userInfo: any
@@ -68,8 +67,10 @@ const useLoginStore = defineStore('login', {
 			const permissions = mapMenuListToPermissions(userMenus)
 			this.permissions = permissions
 
+			// 刷新获得页面全局数据
 			const mainStore = useMainStore()
 			mainStore.fetchEntireDataAction()
+
 			if (token && userInfo && userMenus) {
 				this.token = token
 				this.userInfo = userInfo
