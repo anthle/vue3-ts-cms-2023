@@ -8,8 +8,8 @@
 		<page-content
 			:contentConfig="contentConfig"
 			ref="contentRef"
-			@create-new-department-click="handleCreateNewDepartment"
-			@edit-department-info-click="handleEditDepartment"
+			@create-new-department-click="handleCreateClick"
+			@edit-department-info-click="handleEditClick"
 		>
 			<template #name="{ row }">
 				<span class="name">{{ row.name }}</span>
@@ -46,7 +46,7 @@ const modalConfigRef = computed(() => {
 
 // 重置查询新建编辑操作放入hooks中
 const { contentRef, handleResetClick, handleSearchInfo } = usePageContent()
-const { modalRef, handleCreateNewDepartment, handleEditDepartment } = usePageModal()
+const { modalRef, handleCreateClick, handleEditClick } = usePageModal()
 </script>
 
 <style scoped>
