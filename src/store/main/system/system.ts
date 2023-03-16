@@ -39,14 +39,11 @@ const systemStore = defineStore('system', {
 			this.postUsersListAction({ offset: 0, size: 10 })
 		},
 		async createUserDataAction(userInfo: any) {
-			const res = await createUserData(userInfo)
-			console.log(res)
-
+			await createUserData(userInfo)
 			this.postUsersListAction({ offset: 0, size: 10 })
 		},
 		async editUserDataAction(id: number, userInfo: any) {
-			const res = await editUserData(id, userInfo)
-			console.log(res)
+			await editUserData(id, userInfo)
 
 			this.postUsersListAction({ offset: 0, size: 10 })
 		},

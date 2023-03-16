@@ -43,10 +43,8 @@ const useLoginStore = defineStore('login', {
 			const mainStore = useMainStore()
 			mainStore.fetchEntireDataAction()
 
-			// 获取用户权限
-			console.log(userMenus.data)
-
-			const permissions = mapMenuListToPermissions(userMenus.data)
+			//获取用户权限
+			const permissions = mapMenuListToPermissions(this.userMenus ?? [])
 			this.permissions = permissions
 
 			// 保存用户信息
@@ -64,7 +62,7 @@ const useLoginStore = defineStore('login', {
 			const userMenus = localCache.getCache('userMenus')
 
 			// 获取用户权限
-			const permissions = mapMenuListToPermissions(userMenus)
+			const permissions = mapMenuListToPermissions(userMenus ?? [])
 			this.permissions = permissions
 
 			// 刷新获得页面全局数据

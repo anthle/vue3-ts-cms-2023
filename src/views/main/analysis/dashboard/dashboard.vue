@@ -72,7 +72,6 @@ const showGoodsCategoryFavor = computed(() => {
 	const values = goodsCategoryFavor.value.map((item) => item.goodsFavor)
 	return { labels, values }
 })
-console.log(showGoodsCategoryFavor)
 </script>
 
 <style scoped lang="less">
